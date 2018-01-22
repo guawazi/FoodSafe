@@ -1,4 +1,4 @@
-package cn.wangliang.foodsafe.ui.base;
+package cn.wangliang.foodsafe.base.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

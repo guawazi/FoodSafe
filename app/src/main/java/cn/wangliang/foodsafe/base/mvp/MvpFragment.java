@@ -1,10 +1,10 @@
-package cn.wangliang.foodsafe.ui.mvp;
+package cn.wangliang.foodsafe.base.mvp;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import cn.wangliang.foodsafe.ui.base.BaseFragment;
+import cn.wangliang.foodsafe.base.base.BaseFragment;
 import cn.wangliang.foodsafe.util.CommonUtils;
 
 

@@ -1,4 +1,4 @@
-package cn.wangliang.foodsafe.ui.base;
+package cn.wangliang.foodsafe.base.base;
 
 import android.app.Activity;
 import android.os.Bundle;

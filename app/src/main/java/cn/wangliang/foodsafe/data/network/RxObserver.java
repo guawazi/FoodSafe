@@ -5,7 +5,7 @@ import java.net.SocketTimeoutException;
 import cn.wangliang.foodsafe.R;
 import cn.wangliang.foodsafe.data.network.exception.ApiException;
 import cn.wangliang.foodsafe.data.network.okhttputils.NetworkUtil;
-import cn.wangliang.foodsafe.ui.mvp.MvpView;
+import cn.wangliang.foodsafe.base.mvp.MvpView;
 import cn.wangliang.foodsafe.util.Constant;
 import cn.wangliang.foodsafe.util.CommonUtils;
 import io.reactivex.observers.DisposableObserver;

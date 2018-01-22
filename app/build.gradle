@@ -93,4 +93,7 @@ dependencies {
 
     //database
     implementation 'org.greenrobot:greendao:3.2.2'
+
+    // adapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
 }

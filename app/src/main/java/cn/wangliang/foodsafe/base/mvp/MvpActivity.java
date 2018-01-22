@@ -1,8 +1,8 @@
-package cn.wangliang.foodsafe.ui.mvp;
+package cn.wangliang.foodsafe.base.mvp;
 
 import android.os.Bundle;
 
-import cn.wangliang.foodsafe.ui.base.BaseActivity;
+import cn.wangliang.foodsafe.base.base.BaseActivity;
 import cn.wangliang.foodsafe.util.CommonUtils;
 
 public abstract class MvpActivity<T extends MvpPresenter> extends BaseActivity implements MvpView {
