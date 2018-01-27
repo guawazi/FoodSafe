@@ -18,31 +18,36 @@
         <TextView
             android:id="@+id/tv_data_detection"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:textColor="@android:color/holo_green_light"
+            android:drawableTop="@drawable/img_data_detection_checked"
             android:gravity="center"
-            android:text="检测数据"/>
+            android:text="检测数据"
+            android:textColor="#52c14b"/>
 
 
         <TextView
             android:id="@+id/tv_data_analysis"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawableTop="@drawable/img_data_analysis_unchecked"
             android:gravity="center"
-            android:text="大数据分析"/>
+            android:text="大数据分析"
+            android:textColor="#52c14b"/>
 
         <TextView
             android:id="@+id/tv_mine"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:drawableTop="@drawable/img_mine_unchecked"
             android:gravity="center"
-            android:text="我的"/>
+            android:text="我的"
+            android:textColor="#52c14b"/>
     </LinearLayout>
 
     <FrameLayout

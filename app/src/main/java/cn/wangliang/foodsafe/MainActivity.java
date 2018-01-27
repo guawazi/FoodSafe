@@ -1,18 +1,20 @@
 package cn.wangliang.foodsafe;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.wangliang.foodsafe.base.base.BaseActivity;
 import cn.wangliang.foodsafe.ui.dataanalysis.DataAnalysisFragment;
 import cn.wangliang.foodsafe.ui.datadetection.DataDetectionFragment;
 import cn.wangliang.foodsafe.ui.mine.MineFragment;
-import cn.wangliang.foodsafe.base.base.BaseActivity;
 
 
 public class MainActivity extends BaseActivity {
@@ -27,9 +29,26 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.tv_mine)
     TextView mTvMine;
 
-
     @BindView(R.id.container)
     FrameLayout mContainer;
+
+    @BindDrawable(R.drawable.img_data_analysis_checked)
+    Drawable mImgDataAnalysisChecked;
+
+    @BindDrawable(R.drawable.img_data_analysis_unchecked)
+    Drawable mImgDataAnalysisUnChecked;
+
+    @BindDrawable(R.drawable.img_data_detection_checked)
+    Drawable mImgDataDetectionChecked;
+
+    @BindDrawable(R.drawable.img_data_detection_unchecked)
+    Drawable mImgDataDetectionUnChecked;
+
+    @BindDrawable(R.drawable.img_mine_checked)
+    Drawable mImgMineChecked;
+
+    @BindDrawable(R.drawable.img_mine_unchecked)
+    Drawable mImgMineUnChecked;
 
     private FragmentManager mSupportFragmentManager;
     private Fragment mShowingFragment;
@@ -61,18 +80,27 @@ public class MainActivity extends BaseActivity {
                 mTvDataDetection.setTextColor(Color.GREEN);
                 mTvDataAnalysis.setTextColor(Color.GRAY);
                 mTvMine.setTextColor(Color.GRAY);
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionChecked,null,null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisUnChecked,null,null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineUnChecked,null,null);
                 break;
             case R.id.tv_data_analysis:
                 showFragment(mDataAnalysisFragment);
                 mTvDataDetection.setTextColor(Color.GRAY);
                 mTvDataAnalysis.setTextColor(Color.GREEN);
                 mTvMine.setTextColor(Color.GRAY);
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionUnChecked,null,null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisChecked,null,null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineUnChecked,null,null);
                 break;
             case R.id.tv_mine:
                 showFragment(mMineFragment);
                 mTvDataDetection.setTextColor(Color.GRAY);
                 mTvDataAnalysis.setTextColor(Color.GRAY);
                 mTvMine.setTextColor(Color.GREEN);
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionUnChecked,null,null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisUnChecked,null,null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineChecked,null,null);
                 break;
         }
     }

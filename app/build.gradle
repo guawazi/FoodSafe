@@ -96,4 +96,7 @@ dependencies {
 
     // adapter
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.31'
+
+    // 图表
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
