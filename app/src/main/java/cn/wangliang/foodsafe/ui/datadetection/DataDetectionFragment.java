@@ -2,27 +2,40 @@ package cn.wangliang.foodsafe.ui.datadetection;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import cn.wangliang.foodsafe.R;
-import cn.wangliang.foodsafe.base.base.BaseFragment;
+import cn.wangliang.foodsafe.base.mvp.MvpFragment;
+import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
 
 /**
  * Created by wangliang on 2018/1/22.
  * 检测数据页面
  */
 
-public class DataDetectionFragment extends BaseFragment {
+public class DataDetectionFragment extends MvpFragment<DataDetectionContract.DataDetectionPresenter> implements DataDetectionContract.DataDetectionView {
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
     private DataDetectionAdapter mDataDetectionAdapter;
     private View mAlldataHeader;
     private View mSearchHeader;
+    private EditText mEtDeviceid;
+    private EditText mEtSampleName;
+    private EditText mEtDstMarket;
+    private EditText mEtProjectName;
+    private EditText mEtCarNo;
+    private String mDeviceid;
+    private String mSampleName;
+    private String mDstMarket;
+    private String mProjectName;
+    private String mCarNo;
 
     @Override
     protected int getLayout() {
@@ -34,20 +47,86 @@ public class DataDetectionFragment extends BaseFragment {
         mRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         mDataDetectionAdapter = new DataDetectionAdapter(R.layout.item_data_detetion);
         mRecycler.setAdapter(mDataDetectionAdapter);
-
-        mAlldataHeader = LayoutInflater.from(getContext()).inflate(R.layout.item_alldata_header, null);
-        mSearchHeader = LayoutInflater.from(getContext()).inflate(R.layout.item_search_header, null);
+        mAlldataHeader = LayoutInflater.from(getContext()).inflate(R.layout.item_alldata_header, mRecycler, false);
+        mSearchHeader = LayoutInflater.from(getContext()).inflate(R.layout.item_search_header, mRecycler, false);
         mDataDetectionAdapter.addHeaderView(mSearchHeader);
         mDataDetectionAdapter.addHeaderView(mAlldataHeader);
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            list.add("这是");
+
+        mEtDeviceid = mSearchHeader.findViewById(R.id.et_deviceid);
+        mEtSampleName = mSearchHeader.findViewById(R.id.et_sample_name);
+        mEtDstMarket = mSearchHeader.findViewById(R.id.et_dst_market);
+        mEtProjectName = mSearchHeader.findViewById(R.id.et_project_name);
+        mEtCarNo = mSearchHeader.findViewById(R.id.et_car_no);
+
+        checkSelectCondition();
+        mPresenter.getData(mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket);
+
+        mSearchHeader.findViewById(R.id.tv_reset).setOnClickListener(v -> {
+            mEtDeviceid.setText("");
+            mEtSampleName.setText("");
+            mEtDstMarket.setText("");
+            mEtProjectName.setText("");
+            mEtCarNo.setText("");
+        });
+        mSearchHeader.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
+            checkSelectCondition();
+            mPresenter.getData(mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket);
+        });
+
+        mDataDetectionAdapter.setOnLoadMoreListener(() -> {
+            if (mPresenter != null) {
+                mPresenter.getDataMore();
+            }
+        }, mRecycler);
+    }
+
+    private void checkSelectCondition() {
+        mDeviceid = mEtDeviceid.getText().toString().trim();
+        if (TextUtils.isEmpty(mDeviceid)) {
+            mDeviceid = "0";
         }
-        mDataDetectionAdapter.addData(list);
+        mSampleName = mEtSampleName.getText().toString().trim();
+        mDstMarket = mEtDstMarket.getText().toString().trim();
+        mProjectName = mEtProjectName.getText().toString().trim();
+        mCarNo = mEtCarNo.getText().toString().trim();
     }
 
     public static DataDetectionFragment newInstance() {
         return new DataDetectionFragment();
     }
 
+
+    @Override
+    public void showContent(List<DataDetectionBean> dataDetectionBeans) {
+        mDataDetectionAdapter.getData().clear();
+        mDataDetectionAdapter.addData(dataDetectionBeans);
+    }
+
+    @Override
+    public void showContentMore(List<DataDetectionBean> dataDetectionBean) {
+        if (dataDetectionBean != null && dataDetectionBean.size() > 0) {
+            mDataDetectionAdapter.addData(dataDetectionBean);
+            if (mDataDetectionAdapter != null) {
+                mDataDetectionAdapter.loadMoreComplete();
+            }
+        } else {
+            if (mDataDetectionAdapter != null) {
+                mDataDetectionAdapter.loadMoreEnd();
+            }
+        }
+
+    }
+
+    @Override
+    public void showError(String errorMsg) {
+        super.showError(errorMsg);
+        if (mDataDetectionAdapter != null) {
+            mDataDetectionAdapter.loadMoreFail();
+        }
+    }
+
+    @Override
+    protected DataDetectionPresenter initInject() {
+        return new DataDetectionPresenter();
+    }
 }

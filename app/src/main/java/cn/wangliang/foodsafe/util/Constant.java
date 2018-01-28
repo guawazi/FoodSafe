@@ -11,11 +11,10 @@ public class Constant {
     public static final int STATUS_DISCONNECT = -3;// 网络连接断开
     public static final int STATUS_TIMEOUT = -2;// 网络超时
     public static final int STATUS_ERROR = 0;  //访问网络失败
-    public static final int STATUS_SUCCESS = 1;  //访问网络成功
-    public static final int STATUS_NO_DATA = 201;
-    public static final int STATUS_NO_MORE = 202;
-    public static final int STATUS_FALSE = 203;
-    public static final int STATUS_TOKEN = 400;
+    public static final int STATUS_SUCCESS = 0;  //访问网络成功
     public static final boolean DEBUG = true;
+
+
+    public static final String REGEX_LOG = "\\s*\\{.*\\}\\s*";  // log 匹配规则
 
 }

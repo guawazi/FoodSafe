@@ -1,7 +1,7 @@
 package cn.wangliang.foodsafe.data.network.exception;
 
 
-import cn.wangliang.foodsafe.data.network.ResultBean;
+import cn.wangliang.foodsafe.data.network.bean.ResultBean;
 
 
 

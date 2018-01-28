@@ -1,39 +1,30 @@
 package cn.wangliang.foodsafe.data.network;
 
-import io.reactivex.Observable;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
+import java.util.List;
+
+import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
+import cn.wangliang.foodsafe.data.network.bean.LoginBean;
+import cn.wangliang.foodsafe.data.network.bean.ResultBean;
+import io.reactivex.Flowable;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Streaming;
-import retrofit2.http.Url;
-
-
 
 public interface Api {
-    //////////////上传下载通用接口start
-    /**
-     * 上传文件
-     * @param url  上传url地址
-     * @param requestBody 文件及参数先包装成requestbody形式再进行上传操作
-     * @return
-     */
-    @POST
-    Observable<ResponseBody> uploadFiles(@Url String url, @Body RequestBody requestBody);
 
-    /**
-     * 文件下载
-     *
-     * @param url 文件下载地址
-     * @return
-     */
-    @Streaming
-    @GET
-    Observable<ResponseBody> downloadFile(@Url String url);
-    //////////////上传下载通用接口end
+    @POST("memberAPI/login")
+    @FormUrlEncoded
+    Flowable<ResultBean<LoginBean>> login(@Field("username") String username, @Field("password") String password);
 
-
-
-
+    @POST("testresultAPI/getresultlist")
+    @FormUrlEncoded
+    Flowable<ResultBean<List<DataDetectionBean>>> getDataDetectionData(
+            @Field("page") int page, // 页码（从0开始）
+            @Field("userid") String userid, //登录用户ID
+            @Field("deviceid") String deviceid, //设备id（不查询传0）
+            @Field("projectName") String projectName, //项目名称（不查询传空字符串，非NULL）
+            @Field("sampleName") String sampleName, //样品名称（不查询传空字符串，非NULL）
+            @Field("carNO") String carNO, // 车牌号（不查询传空字符串，非NULL）
+            @Field("dst_market") String dstMarket // 送往市场（不查询传空字符串，非NULL）
+    );
 }

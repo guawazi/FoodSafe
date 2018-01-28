@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AndroidBasis</string>
+    <string name="app_name">食药局</string>
     <!--网络相关-->
     <string name="api_empty">还没有数据哦</string>
     <string name="api_loading">加载中</string>
@@ -9,4 +9,12 @@
     <string name="api_net_timeout">您当前的网络不太稳定</string>
     <string name="api_net_error">服务器繁忙，请稍后再试</string>
     <string name="api_net_no_more">无更多数据</string>
+
+
+
+    <!--首页相关-->
+    <string name="detection_data">检测数据</string>
+    <string name="analysis_data">大数据分析</string>
+    <string name="mine">我的</string>
+    <string name="app_title">北京市食药局</string>
 </resources>

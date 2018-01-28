@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/tab"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/dim_56dp"
         android:layout_alignParentBottom="true"
         android:background="@null"
         android:orientation="horizontal">
@@ -21,10 +21,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:background="@null"
             android:drawableTop="@drawable/img_data_detection_checked"
             android:gravity="center"
-            android:text="检测数据"
-            android:textColor="#52c14b"/>
+            android:text="@string/detection_data"
+            android:textColor="@color/color_52c14b"/>
 
 
         <TextView
@@ -33,10 +34,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:background="@null"
             android:drawableTop="@drawable/img_data_analysis_unchecked"
             android:gravity="center"
-            android:text="大数据分析"
-            android:textColor="#52c14b"/>
+            android:text="@string/analysis_data"
+            android:textColor="@color/color_282828"/>
 
         <TextView
             android:id="@+id/tv_mine"
@@ -44,10 +46,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:background="@null"
             android:drawableTop="@drawable/img_mine_unchecked"
             android:gravity="center"
-            android:text="我的"
-            android:textColor="#52c14b"/>
+            android:text="@string/mine"
+            android:textColor="@color/color_282828"/>
     </LinearLayout>
 
     <FrameLayout

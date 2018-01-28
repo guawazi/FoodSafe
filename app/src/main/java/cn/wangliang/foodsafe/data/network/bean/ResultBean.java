@@ -1,14 +1,19 @@
-package cn.wangliang.foodsafe.data.network;
+package cn.wangliang.foodsafe.data.network.bean;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * 网络请求 最外层的Bean
- *
+ * <p>
  * Created by 徐极凯 on 2018/1/3.
  */
 
 public class ResultBean<T> {
+    @SerializedName("state")
     private int status;//状态码
+    @SerializedName("data")
     private T data;//返回成功数据
+    @SerializedName("result")
     private String msg;//错误提示信息
 
     public ResultBean() {

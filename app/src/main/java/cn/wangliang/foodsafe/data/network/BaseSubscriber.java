@@ -5,6 +5,7 @@ import android.content.Context;
 
 import java.lang.ref.WeakReference;
 
+import cn.wangliang.foodsafe.data.network.bean.ResultBean;
 import cn.wangliang.foodsafe.data.network.exception.ApiExceptionHandler;
 import io.reactivex.subscribers.DisposableSubscriber;
 

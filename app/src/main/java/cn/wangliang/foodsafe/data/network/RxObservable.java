@@ -1,5 +1,6 @@
 package cn.wangliang.foodsafe.data.network;
 
+import cn.wangliang.foodsafe.data.network.bean.ResultBean;
 import cn.wangliang.foodsafe.data.network.exception.ApiException;
 import cn.wangliang.foodsafe.util.Constant;
 import io.reactivex.Observable;

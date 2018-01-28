@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/img_login_background"
+    tools:context="cn.wangliang.foodsafe.LoginActivity">
+
+
+    <ImageView
+        android:id="@+id/iv_user"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="106dp"
+        android:background="@drawable/shape_login"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_user"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="食品安全大数据系统"
+        android:textColor="#fff"
+        android:textSize="15sp"/>
+
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:background="@null"
+        android:hint="账号"
+        android:minWidth="200dp"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:textSize="16sp"
+        android:theme="@style/MyEditText"/>
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_username"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@null"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:minWidth="200dp"
+        android:textColor="#fff"
+        android:textColorHint="#fff"
+        android:textSize="16sp"
+        android:theme="@style/MyEditText"/>
+
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="254dp"
+        android:layout_height="37dp"
+        android:layout_below="@id/et_password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:background="#277141"
+        android:text="登陆"
+        android:textColor="#fff"
+        android:textSize="17sp"/>
+
+</RelativeLayout>

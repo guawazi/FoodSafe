@@ -1,6 +1,7 @@
 package cn.wangliang.foodsafe;
 
-import android.graphics.Color;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +16,7 @@ import cn.wangliang.foodsafe.base.base.BaseActivity;
 import cn.wangliang.foodsafe.ui.dataanalysis.DataAnalysisFragment;
 import cn.wangliang.foodsafe.ui.datadetection.DataDetectionFragment;
 import cn.wangliang.foodsafe.ui.mine.MineFragment;
+import cn.wangliang.foodsafe.util.CommonUtils;
 
 
 public class MainActivity extends BaseActivity {
@@ -77,30 +79,30 @@ public class MainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.tv_data_detection:
                 showFragment(mDataDetectionFragment);
-                mTvDataDetection.setTextColor(Color.GREEN);
-                mTvDataAnalysis.setTextColor(Color.GRAY);
-                mTvMine.setTextColor(Color.GRAY);
-                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionChecked,null,null);
-                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisUnChecked,null,null);
-                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineUnChecked,null,null);
+                mTvDataDetection.setTextColor(CommonUtils.getColor(R.color.color_52c14b));
+                mTvDataAnalysis.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvMine.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataDetectionChecked, null, null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataAnalysisUnChecked, null, null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null, mImgMineUnChecked, null, null);
                 break;
             case R.id.tv_data_analysis:
                 showFragment(mDataAnalysisFragment);
-                mTvDataDetection.setTextColor(Color.GRAY);
-                mTvDataAnalysis.setTextColor(Color.GREEN);
-                mTvMine.setTextColor(Color.GRAY);
-                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionUnChecked,null,null);
-                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisChecked,null,null);
-                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineUnChecked,null,null);
+                mTvDataDetection.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvDataAnalysis.setTextColor(CommonUtils.getColor(R.color.color_52c14b));
+                mTvMine.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataDetectionUnChecked, null, null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataAnalysisChecked, null, null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null, mImgMineUnChecked, null, null);
                 break;
             case R.id.tv_mine:
                 showFragment(mMineFragment);
-                mTvDataDetection.setTextColor(Color.GRAY);
-                mTvDataAnalysis.setTextColor(Color.GRAY);
-                mTvMine.setTextColor(Color.GREEN);
-                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataDetectionUnChecked,null,null);
-                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null,mImgDataAnalysisUnChecked,null,null);
-                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null,mImgMineChecked,null,null);
+                mTvDataDetection.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvDataAnalysis.setTextColor(CommonUtils.getColor(R.color.color_282828));
+                mTvMine.setTextColor(CommonUtils.getColor(R.color.color_52c14b));
+                mTvDataDetection.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataDetectionUnChecked, null, null);
+                mTvDataAnalysis.setCompoundDrawablesWithIntrinsicBounds(null, mImgDataAnalysisUnChecked, null, null);
+                mTvMine.setCompoundDrawablesWithIntrinsicBounds(null, mImgMineChecked, null, null);
                 break;
         }
     }
@@ -135,5 +137,10 @@ public class MainActivity extends BaseActivity {
         mShowingFragment = showFragment;
     }
 
+
+    public static void actionActivity(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
+    }
 
 }
