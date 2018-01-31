@@ -25,13 +25,13 @@
         android:orientation="horizontal">
 
 
-        <TextView
+        <Spinner
+            android:id="@+id/spinner_unit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="样品单位"
             android:textSize="@dimen/dim_11sp"/>
 
         <TextView

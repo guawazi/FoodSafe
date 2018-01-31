@@ -5,14 +5,20 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import cn.wangliang.foodsafe.R;
 import cn.wangliang.foodsafe.base.mvp.MvpFragment;
 import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
+import cn.wangliang.foodsafe.ui.detecdetail.DetecDetailActivity;
+import cn.wangliang.foodsafe.util.CommonUtils;
 
 /**
  * Created by wangliang on 2018/1/22.
@@ -23,6 +29,10 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
 
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
+
+    @BindView(R.id.spinner_unit)
+    Spinner mSpinnerUnit;
+
     private DataDetectionAdapter mDataDetectionAdapter;
     private View mAlldataHeader;
     private View mSearchHeader;
@@ -78,6 +88,30 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
                 mPresenter.getDataMore();
             }
         }, mRecycler);
+
+        mDataDetectionAdapter.setOnItemClickListener((adapter, view, position) -> DetecDetailActivity.actionActivity(getActivity()));
+
+
+//        initSpinner();
+
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            strings.add("这是"+i);
+        }
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext(),R.layout.item_spinner,strings);
+        mSpinnerUnit.setAdapter(spinnerAdapter);
+        mSpinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String s = strings.get(position);
+                CommonUtils.showToastShort("点击了"+s);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void checkSelectCondition() {

@@ -48,7 +48,8 @@
         <activity android:name=".ui.mine.InstrumentListActivity">
         </activity>
         <activity android:name=".LoginActivity">
-
+        </activity>
+        <activity android:name=".ui.detecdetail.DetecDetailActivity">
         </activity>
     </application>
 
