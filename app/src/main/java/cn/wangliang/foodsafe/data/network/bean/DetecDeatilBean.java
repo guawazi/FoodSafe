@@ -3,53 +3,56 @@ package cn.wangliang.foodsafe.data.network.bean;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by wangliang on 2018/1/28.
+ * Created by wangliang on 2018/1/31.
+ * 数据检测 详情页
  */
 
-public class DataDetectionBean {
+public class DetecDeatilBean {
 
-    // 生产批次
     @SerializedName("batch")
     private String batch;
 
-    // 浓度
     @SerializedName("concentration")
     private String concentration;
 
     @SerializedName("id")
     private String id;
 
-    //项目名称
     @SerializedName("project_name")
     private String projectName;
 
-    // 样品名称
     @SerializedName("sample_name")
     private String sampleName;
 
-    // 样品单位
     @SerializedName("sample_unit")
     private String sampleUnit;
 
-    // 合格标准
     @SerializedName("standard")
     private String standard;
 
-    // 检测结果 1 疑似阳性 2阴性
     @SerializedName("test_result")
     private String testResult;
 
-    // 检查时间 long时间戳
     @SerializedName("test_time")
     private long testTime;
 
-    // 检测值
     @SerializedName("test_value")
     private String testValue;
 
-    //
     @SerializedName("type")
     private String type;
+
+    @SerializedName("carno")
+    private String carno;
+
+    @SerializedName("dst_market")
+    private String dstMarket;
+
+    @SerializedName("devicename")
+    private String devicename;
+
+    @SerializedName("test_member")
+    private String testMember;
 
     public String getBatch() {
         return batch;
@@ -137,5 +140,37 @@ public class DataDetectionBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getCarno() {
+        return carno;
+    }
+
+    public void setCarno(String carno) {
+        this.carno = carno;
+    }
+
+    public String getDstMarket() {
+        return dstMarket;
+    }
+
+    public void setDstMarket(String dstMarket) {
+        this.dstMarket = dstMarket;
+    }
+
+    public String getDevicename() {
+        return devicename;
+    }
+
+    public void setDevicename(String devicename) {
+        this.devicename = devicename;
+    }
+
+    public String getTestMember() {
+        return testMember;
+    }
+
+    public void setTestMember(String testMember) {
+        this.testMember = testMember;
     }
 }

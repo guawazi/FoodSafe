@@ -17,4 +17,5 @@ public class Constant {
 
     public static final String REGEX_LOG = "\\s*\\{.*\\}\\s*";  // log 匹配规则
 
+    public static final String LOGIN_USERID = "login_userid";
 }

@@ -2,18 +2,19 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                                     android:layout_width="match_parent"
                                     android:layout_height="150dp"
-                                    android:background="@color/color_ffffff"
                                     android:layout_marginEnd="20dp"
                                     android:layout_marginStart="20dp"
-                                    android:layout_marginTop="20dp">
+                                    android:layout_marginTop="20dp"
+                                    android:background="@color/color_ffffff">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:text="X"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="高级搜索"
+        android:textColor="@color/color_52c14b"
+        android:textSize="@dimen/dim_11sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,16 +78,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
-                android:paddingStart="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingStart="10dp">
 
                 <TextView
                     android:id="@+id/tv_reset"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:background="@drawable/shape_reset"
                     android:gravity="center"
-                    android:text="重置"/>
+                    android:padding="5dp"
+                    android:text="重置"
+                    android:textColor="@color/color_ffffff"/>
 
                 <TextView
                     android:id="@+id/tv_confirm"
@@ -94,8 +98,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="20dp"
+                    android:background="@drawable/shape_confirm"
                     android:gravity="center"
-                    android:text="确认"/>
+                    android:padding="5dp"
+                    android:text="确认"
+                    android:textColor="@color/color_ffffff"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

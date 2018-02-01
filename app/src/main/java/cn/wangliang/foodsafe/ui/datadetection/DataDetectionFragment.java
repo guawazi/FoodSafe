@@ -16,9 +16,15 @@ import java.util.List;
 import butterknife.BindView;
 import cn.wangliang.foodsafe.R;
 import cn.wangliang.foodsafe.base.mvp.MvpFragment;
+import cn.wangliang.foodsafe.data.network.ApiService;
+import cn.wangliang.foodsafe.data.network.RxFlowable;
+import cn.wangliang.foodsafe.data.network.RxSimpleSubscriber;
 import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
+import cn.wangliang.foodsafe.data.network.bean.SampleNameBean;
 import cn.wangliang.foodsafe.ui.detecdetail.DetecDetailActivity;
 import cn.wangliang.foodsafe.util.CommonUtils;
+import cn.wangliang.foodsafe.util.Constant;
+import cn.wangliang.foodsafe.util.SPUtils;
 
 /**
  * Created by wangliang on 2018/1/22.
@@ -71,6 +77,19 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         checkSelectCondition();
         mPresenter.getData(mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket);
 
+
+        ApiService.getInstance()
+                .getApi()
+                .getSampleNameList(SPUtils.getString(Constant.LOGIN_USERID, ""))
+                .compose(RxFlowable.handleResult())
+                .compose(RxFlowable.io_main())
+                .subscribe(new RxSimpleSubscriber<List<SampleNameBean>>() {
+                    @Override
+                    public void onSuccess(List<SampleNameBean> bean) {
+
+                    }
+                });
+
         mSearchHeader.findViewById(R.id.tv_reset).setOnClickListener(v -> {
             mEtDeviceid.setText("");
             mEtSampleName.setText("");
@@ -89,22 +108,25 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
             }
         }, mRecycler);
 
-        mDataDetectionAdapter.setOnItemClickListener((adapter, view, position) -> DetecDetailActivity.actionActivity(getActivity()));
+        mDataDetectionAdapter.setOnItemClickListener((adapter, view, position) -> {
+            DataDetectionBean dataDetectionBean = mDataDetectionAdapter.getData().get(position);
+            DetecDetailActivity.actionActivity(getActivity(), dataDetectionBean.getId());
+        });
 
 
 //        initSpinner();
 
         ArrayList<String> strings = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            strings.add("这是"+i);
+            strings.add("这是" + i);
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext(),R.layout.item_spinner,strings);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext(), R.layout.item_spinner, strings);
         mSpinnerUnit.setAdapter(spinnerAdapter);
         mSpinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String s = strings.get(position);
-                CommonUtils.showToastShort("点击了"+s);
+                CommonUtils.showToastShort("点击了" + s);
             }
 
             @Override

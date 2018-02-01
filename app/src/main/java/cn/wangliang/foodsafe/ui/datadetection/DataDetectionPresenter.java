@@ -6,6 +6,8 @@ import cn.wangliang.foodsafe.data.network.RxFlowable;
 import cn.wangliang.foodsafe.data.network.RxSubscriber;
 import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
 import cn.wangliang.foodsafe.ui.datadetection.data.DataDetectionRepository;
+import cn.wangliang.foodsafe.util.Constant;
+import cn.wangliang.foodsafe.util.SPUtils;
 
 /**
  * Created by wangliang on 2018/1/28.
@@ -44,7 +46,7 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
         mSampleName = sampleName;
         mCarNO = carNO;
         mDstMarket = dstMarket;
-        mDataDetectionRepository.getData(mPage, "201801250355443050", mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket)
+        mDataDetectionRepository.getData(mPage, SPUtils.getString(Constant.LOGIN_USERID,""), mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket)
                 .compose(RxFlowable.io_main())
                 .subscribe(new RxSubscriber<List<DataDetectionBean>>(mView) {
                     @Override

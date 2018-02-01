@@ -8,13 +8,15 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import cn.wangliang.foodsafe.base.base.BaseActivity;
 import cn.wangliang.foodsafe.data.network.ApiService;
-import cn.wangliang.foodsafe.data.network.bean.LoginBean;
-import cn.wangliang.foodsafe.data.network.bean.ResultBean;
 import cn.wangliang.foodsafe.data.network.RxFlowable;
 import cn.wangliang.foodsafe.data.network.RxSimpleSubscriber;
+import cn.wangliang.foodsafe.data.network.bean.LoginBean;
+import cn.wangliang.foodsafe.data.network.bean.ResultBean;
 import cn.wangliang.foodsafe.util.CommonUtils;
+import cn.wangliang.foodsafe.util.Constant;
 import cn.wangliang.foodsafe.util.EncryptUtil;
 import cn.wangliang.foodsafe.util.LoadingDialog;
+import cn.wangliang.foodsafe.util.SPUtils;
 
 public class LoginActivity extends BaseActivity {
 
@@ -35,7 +37,11 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initEventAndData() {
-
+        String string = SPUtils.getString(Constant.LOGIN_USERID, "");
+        if (!TextUtils.isEmpty(string)) {
+            MainActivity.actionActivity(LoginActivity.this);
+            finish();
+        }
     }
 
     @OnClick(R.id.btn_login)
@@ -61,7 +67,7 @@ public class LoginActivity extends BaseActivity {
 
         mLoadingDialog = LoadingDialog.newInstance()
                 .setLoadingCancelListener(() -> RxFlowable.disposable(mRxSimpleSubscriber));
-        mLoadingDialog.show(getSupportFragmentManager(),"LoadingDialog");
+        mLoadingDialog.show(getSupportFragmentManager(), "LoadingDialog");
         mRxSimpleSubscriber = ApiService.getInstance()
                 .getApi()
                 .login(username, EncryptUtil.str2MD5(password))
@@ -70,9 +76,10 @@ public class LoginActivity extends BaseActivity {
                 .subscribeWith(new RxSimpleSubscriber<LoginBean>() {
                     @Override
                     public void onSuccess(LoginBean bean) {
-                        if (mLoadingDialog != null){
+                        if (mLoadingDialog != null) {
                             mLoadingDialog.dismiss();
                         }
+                        SPUtils.setString(Constant.LOGIN_USERID, bean.getId());
                         MainActivity.actionActivity(LoginActivity.this);
                         finish();
                     }
@@ -80,7 +87,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onFailed(ResultBean bean) {
                         super.onFailed(bean);
-                        if (mLoadingDialog != null){
+                        if (mLoadingDialog != null) {
                             mLoadingDialog.dismiss();
                         }
                     }

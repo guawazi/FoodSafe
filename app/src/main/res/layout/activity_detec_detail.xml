@@ -50,7 +50,7 @@
             android:textSize="46sp"/>
 
         <TextView
-            android:id="@+id/tv_project_name"
+            android:id="@+id/tv_test_member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -69,19 +69,20 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
             android:layout_marginStart="14dp"
-            android:layout_toEndOf="@id/tv_project_name"
-            android:text="大昌宏晟"
+            android:layout_toEndOf="@id/tv_test_member"
+            android:text="牛肉"
             android:textColor="@color/color_ffffff"
             android:textSize="16sp"/>
 
         <TextView
+            android:id="@+id/tv_project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="14dp"
             android:layout_marginStart="14dp"
             android:layout_toEndOf="@id/tv_sample_name"
-            android:text="大昌宏晟"
+            android:text="沙丁胺醇"
             android:textColor="@color/color_ffffff"
             android:textSize="16sp"/>
     </RelativeLayout>
@@ -93,7 +94,6 @@
         <TextView
             android:id="@+id/tv_title1"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="2dp"
