@@ -24,34 +24,85 @@
         android:background="@color/color_bdd4b3"
         android:orientation="horizontal">
 
-
-        <Spinner
-            android:id="@+id/spinner_unit"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
-            android:textSize="@dimen/dim_11sp"/>
+            >
 
-        <TextView
+            <TextView
+                android:id="@+id/tv_sample_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/ic_select"
+                android:gravity="center"
+                android:text="样品名称"
+                android:textSize="@dimen/dim_11sp"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
-            android:text="阴性阳性"
-            android:textSize="@dimen/dim_11sp"/>
+            >
 
-        <TextView
+            <TextView
+                android:id="@+id/tv_type_result"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawablePadding="5dp"
+                android:drawableRight="@drawable/ic_select"
+                android:gravity="center"
+                android:text="阴性阳性"
+                android:textSize="@dimen/dim_11sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="2018/01/10-01/17"
-            android:textColor="#55bc9e"
-            android:textSize="@dimen/dim_11sp"/>
+            android:layout_weight="4">
+
+            <TextView
+                android:id="@+id/tv_start_data"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="2018/01/10"
+                android:textColor="#55bc9e"
+                android:textSize="@dimen/dim_11sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="#55bc9e"/>
+
+            <TextView
+                android:id="@+id/tv_end_data"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="2018/01/10"
+                android:textColor="#55bc9e"
+                android:textSize="@dimen/dim_11sp"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 

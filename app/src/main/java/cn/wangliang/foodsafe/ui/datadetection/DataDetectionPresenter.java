@@ -6,8 +6,6 @@ import cn.wangliang.foodsafe.data.network.RxFlowable;
 import cn.wangliang.foodsafe.data.network.RxSubscriber;
 import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
 import cn.wangliang.foodsafe.ui.datadetection.data.DataDetectionRepository;
-import cn.wangliang.foodsafe.util.Constant;
-import cn.wangliang.foodsafe.util.SPUtils;
 
 /**
  * Created by wangliang on 2018/1/28.
@@ -23,6 +21,10 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
     private String mCarNO;
     private String mDstMarket;
     private int mPage;
+    private int mResult;
+    private long mStarttime;
+    private long mEndtime;
+    private String mUserId;
 
     public DataDetectionPresenter() {
         mDataDetectionRepository = DataDetectionRepository.newInstance();
@@ -39,14 +41,18 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
     }
 
     @Override
-    public void getData(String deviceid, String projectName, String sampleName, String carNO, String dstMarket) {
+    public void getData(String userId,String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime) {
         mPage = 0;
+        mUserId = userId;
         mDeviceid = deviceid;
         mProjectName = projectName;
         mSampleName = sampleName;
         mCarNO = carNO;
         mDstMarket = dstMarket;
-        mDataDetectionRepository.getData(mPage, SPUtils.getString(Constant.LOGIN_USERID,""), mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket)
+        mResult = result;
+        mStarttime = starttime;
+        mEndtime = endtime;
+        mDataDetectionRepository.getData(mPage, userId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket, result, starttime, endtime)
                 .compose(RxFlowable.io_main())
                 .subscribe(new RxSubscriber<List<DataDetectionBean>>(mView) {
                     @Override
@@ -58,7 +64,7 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
 
     @Override
     public void getDataMore() {
-        mDataDetectionRepository.getData(++mPage,"201801250355443050", mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket)
+        mDataDetectionRepository.getData(++mPage,mUserId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket,mResult,mStarttime,mEndtime)
                 .compose(RxFlowable.io_main())
                 .subscribe(new RxSubscriber<List<DataDetectionBean>>(mView) {
                     @Override

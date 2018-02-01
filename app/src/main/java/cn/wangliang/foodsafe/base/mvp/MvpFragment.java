@@ -37,7 +37,7 @@ public abstract class MvpFragment<T extends MvpPresenter> extends BaseFragment i
 
     @Override
     public void showLoading(String msg) {
-        CommonUtils.showToastShort(msg);
+//        CommonUtils.showToastShort(msg);
     }
 
     @Override
@@ -48,7 +48,6 @@ public abstract class MvpFragment<T extends MvpPresenter> extends BaseFragment i
     @Override
     public void showError(String errorMsg) {
         CommonUtils.showToastShort(errorMsg);
-
     }
 
     @Override

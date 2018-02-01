@@ -20,7 +20,7 @@ public class DataDetectionContract {
     }
 
     public interface DataDetectionPresenter extends MvpPresenter<DataDetectionView> {
-        void getData(String deviceid, String projectName, String sampleName, String carNO, String dstMarket);
+        void getData(String userId,String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime);
 
         void getDataMore();
     }

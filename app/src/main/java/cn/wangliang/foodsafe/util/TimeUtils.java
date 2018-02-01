@@ -11,9 +11,15 @@ import java.util.Locale;
 public class TimeUtils {
 
     private static SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.CHINA);
+    private static SimpleDateFormat mDateFormat2 = new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA);
 
     public static String format(long time) {
         String format = mDateFormat.format(new Date(time));
+        return format;
+    }
+
+    public static String format2(long time) {
+        String format = mDateFormat2.format(new Date(time));
         return format;
     }
 }

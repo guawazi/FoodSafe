@@ -5,15 +5,21 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import com.bigkoo.pickerview.TimePickerView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.wangliang.foodsafe.R;
 import cn.wangliang.foodsafe.base.mvp.MvpFragment;
 import cn.wangliang.foodsafe.data.network.ApiService;
@@ -25,6 +31,7 @@ import cn.wangliang.foodsafe.ui.detecdetail.DetecDetailActivity;
 import cn.wangliang.foodsafe.util.CommonUtils;
 import cn.wangliang.foodsafe.util.Constant;
 import cn.wangliang.foodsafe.util.SPUtils;
+import cn.wangliang.foodsafe.util.TimeUtils;
 
 /**
  * Created by wangliang on 2018/1/22.
@@ -36,8 +43,19 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
     @BindView(R.id.recycler)
     RecyclerView mRecycler;
 
-    @BindView(R.id.spinner_unit)
-    Spinner mSpinnerUnit;
+
+    @BindView(R.id.tv_start_data)
+    TextView mTvStartData;
+
+    @BindView(R.id.tv_end_data)
+    TextView mTvEndData;
+
+    @BindView(R.id.tv_type_result)
+    TextView mTvTypeResult;
+
+    @BindView(R.id.tv_sample_name)
+    TextView mTvSampleName;
+
 
     private DataDetectionAdapter mDataDetectionAdapter;
     private View mAlldataHeader;
@@ -52,6 +70,21 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
     private String mDstMarket;
     private String mProjectName;
     private String mCarNo;
+    private Calendar mCalendar;
+    private TimePickerView mStartTimePickerView;
+    private TimePickerView mEndTimePickerView;
+    private PopupWindow mTypeResultPopupWindow;
+    private PopupWindow mSampleNamePopupWindow;
+    private BaseQuickAdapter<String, BaseViewHolder> mTypeResultAdapter;
+    private ArrayList<String> mTypeResultList;
+    private BaseQuickAdapter<SampleNameBean, BaseViewHolder> mSampleNameAdapter;
+
+    private int mTypeResult = 0;
+    // !!! 这不是真正的 uid
+    private String mUserId = SPUtils.getString(Constant.LOGIN_USERID);
+
+    private long mStartTime = 0;
+    private long mEndTime = 0;
 
     @Override
     protected int getLayout() {
@@ -75,20 +108,11 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         mEtCarNo = mSearchHeader.findViewById(R.id.et_car_no);
 
         checkSelectCondition();
-        mPresenter.getData(mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket);
+        mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
 
-
-        ApiService.getInstance()
-                .getApi()
-                .getSampleNameList(SPUtils.getString(Constant.LOGIN_USERID, ""))
-                .compose(RxFlowable.handleResult())
-                .compose(RxFlowable.io_main())
-                .subscribe(new RxSimpleSubscriber<List<SampleNameBean>>() {
-                    @Override
-                    public void onSuccess(List<SampleNameBean> bean) {
-
-                    }
-                });
+        mTypeResultList = new ArrayList<>();
+        mTypeResultList.add("阳性");
+        mTypeResultList.add("阴性");
 
         mSearchHeader.findViewById(R.id.tv_reset).setOnClickListener(v -> {
             mEtDeviceid.setText("");
@@ -99,7 +123,7 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         });
         mSearchHeader.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
             checkSelectCondition();
-            mPresenter.getData(mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket);
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
         });
 
         mDataDetectionAdapter.setOnLoadMoreListener(() -> {
@@ -113,27 +137,87 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
             DetecDetailActivity.actionActivity(getActivity(), dataDetectionBean.getId());
         });
 
+        mStartTimePickerView = new TimePickerView.Builder(getContext(), (date, v) -> {
+            mStartTime = date.getTime();
+            String format = TimeUtils.format2(date.getTime());
+            mTvStartData.setText(format);
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setTitleText("开始时间")
+                .build();
+        mStartTimePickerView.setDate(Calendar.getInstance());
 
-//        initSpinner();
+        mEndTimePickerView = new TimePickerView.Builder(getContext(), (date, v) -> {
+            mEndTime = date.getTime();
+            String format = TimeUtils.format2(date.getTime());
+            mTvEndData.setText(format);
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setTitleText("结束时间")
+                .build();
+        mEndTimePickerView.setDate(Calendar.getInstance());
 
-        ArrayList<String> strings = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            strings.add("这是" + i);
-        }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter(getContext(), R.layout.item_spinner, strings);
-        mSpinnerUnit.setAdapter(spinnerAdapter);
-        mSpinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        initSampleWindow();
+        initDataTypeWindow();
+        ApiService.getInstance()
+                .getApi()
+                .getSampleNameList(SPUtils.getString(Constant.LOGIN_USERID, ""))
+                .compose(RxFlowable.handleResult())
+                .compose(RxFlowable.io_main())
+                .subscribe(new RxSimpleSubscriber<List<SampleNameBean>>() {
+                    @Override
+                    public void onSuccess(List<SampleNameBean> bean) {
+                        mSampleNameAdapter.setNewData(bean);
+                    }
+                });
+    }
+
+    private void initSampleWindow() {
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.item_popwindow, null);
+        mSampleNamePopupWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        RecyclerView recyclerView = contentView.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mSampleNameAdapter = new BaseQuickAdapter<SampleNameBean, BaseViewHolder>(R.layout.item_popwindow_recycler) {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String s = strings.get(position);
-                CommonUtils.showToastShort("点击了" + s);
+            protected void convert(BaseViewHolder helper, SampleNameBean item) {
+                helper.setText(R.id.tv_item, item.getRealname());
             }
+        };
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+        mSampleNameAdapter.setOnItemClickListener((adapter, view, position) -> {
+            SampleNameBean sampleNameBean = mSampleNameAdapter.getData().get(position);
+            mTvSampleName.setText(sampleNameBean.getRealname());
+            mUserId = sampleNameBean.getId();
+            mSampleNamePopupWindow.dismiss();
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
         });
+
+        mSampleNameAdapter.bindToRecyclerView(recyclerView);
+    }
+
+    private void initDataTypeWindow() {
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.item_popwindow, null);
+        mTypeResultPopupWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        RecyclerView recyclerView = contentView.findViewById(R.id.recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mTypeResultAdapter = new BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_popwindow_recycler) {
+            @Override
+            protected void convert(BaseViewHolder helper, String item) {
+                helper.setText(R.id.tv_item, item);
+            }
+        };
+        mTypeResultAdapter.setOnItemClickListener((adapter, view, position) -> {
+            mTvTypeResult.setText(mTypeResultAdapter.getData().get(position));
+            mTypeResult = position + 1;
+            mTypeResultPopupWindow.dismiss();
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
+        });
+        mTypeResultAdapter.bindToRecyclerView(recyclerView);
+        mTypeResultAdapter.setNewData(mTypeResultList);
     }
 
     private void checkSelectCondition() {
@@ -154,6 +238,9 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
 
     @Override
     public void showContent(List<DataDetectionBean> dataDetectionBeans) {
+        if (dataDetectionBeans == null || dataDetectionBeans.size() < 1) {
+            CommonUtils.showToastShort("没有搜索到数据");
+        }
         mDataDetectionAdapter.getData().clear();
         mDataDetectionAdapter.addData(dataDetectionBeans);
     }
@@ -181,8 +268,27 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         }
     }
 
+    @OnClick({R.id.tv_start_data, R.id.tv_end_data, R.id.tv_type_result, R.id.tv_sample_name})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_start_data:
+                mStartTimePickerView.show();
+                break;
+            case R.id.tv_end_data:
+                mEndTimePickerView.show();
+                break;
+            case R.id.tv_type_result:
+                mTypeResultPopupWindow.showAsDropDown(mTvTypeResult);
+                break;
+            case R.id.tv_sample_name:
+                mSampleNamePopupWindow.showAsDropDown(mTvSampleName);
+                break;
+        }
+    }
+
     @Override
     protected DataDetectionPresenter initInject() {
         return new DataDetectionPresenter();
     }
+
 }
