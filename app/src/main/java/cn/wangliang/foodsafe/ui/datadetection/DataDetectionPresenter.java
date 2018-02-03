@@ -25,6 +25,7 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
     private long mStarttime;
     private long mEndtime;
     private String mUserId;
+    private String mMarketid = "0";
 
     public DataDetectionPresenter() {
         mDataDetectionRepository = DataDetectionRepository.newInstance();
@@ -41,7 +42,7 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
     }
 
     @Override
-    public void getData(String userId,String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime) {
+    public void getData(String userId,String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime,String marketid) {
         mPage = 0;
         mUserId = userId;
         mDeviceid = deviceid;
@@ -52,7 +53,8 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
         mResult = result;
         mStarttime = starttime;
         mEndtime = endtime;
-        mDataDetectionRepository.getData(mPage, userId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket, result, starttime, endtime)
+        mMarketid = marketid;
+        mDataDetectionRepository.getData(mPage, userId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket, result, starttime, endtime, marketid)
                 .compose(RxFlowable.io_main())
                 .subscribe(new RxSubscriber<List<DataDetectionBean>>(mView) {
                     @Override
@@ -64,7 +66,7 @@ public class DataDetectionPresenter implements DataDetectionContract.DataDetecti
 
     @Override
     public void getDataMore() {
-        mDataDetectionRepository.getData(++mPage,mUserId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket,mResult,mStarttime,mEndtime)
+        mDataDetectionRepository.getData(++mPage,mUserId, mDeviceid, mProjectName, mSampleName, mCarNO, mDstMarket,mResult,mStarttime,mEndtime,mMarketid)
                 .compose(RxFlowable.io_main())
                 .subscribe(new RxSubscriber<List<DataDetectionBean>>(mView) {
                     @Override

@@ -23,14 +23,14 @@
             android:paddingStart="10dp">
 
             <TextView
-                android:id="@+id/tv_x"
+                android:id="@+id/tv_test_member"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 tools:text="未知"/>
 
             <TextView
-                android:id="@+id/tv_xx"
+                android:id="@+id/tv_dst_market"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

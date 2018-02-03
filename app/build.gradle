@@ -33,7 +33,7 @@ android {
 
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", "\"http://60.205.156.58:8080\""
             buildConfigField "String", "USER_AGENT", "\"mobile\""

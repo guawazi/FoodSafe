@@ -40,7 +40,7 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/ic_select"
                 android:gravity="center"
-                android:text="样品名称"
+                android:text="样品单位"
                 android:textSize="@dimen/dim_11sp"/>
         </LinearLayout>
 
@@ -60,7 +60,7 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/ic_select"
                 android:gravity="center"
-                android:text="阴性阳性"
+                android:text="全部结果"
                 android:textSize="@dimen/dim_11sp"/>
 
         </LinearLayout>

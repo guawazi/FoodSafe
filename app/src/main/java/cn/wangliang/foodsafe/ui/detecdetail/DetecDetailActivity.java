@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -20,6 +21,7 @@ import cn.wangliang.foodsafe.data.network.ApiService;
 import cn.wangliang.foodsafe.data.network.RxFlowable;
 import cn.wangliang.foodsafe.data.network.RxSimpleSubscriber;
 import cn.wangliang.foodsafe.data.network.bean.DetecDeatilBean;
+import cn.wangliang.foodsafe.util.CommonUtils;
 import cn.wangliang.foodsafe.util.TimeUtils;
 
 public class DetecDetailActivity extends BaseActivity {
@@ -41,6 +43,8 @@ public class DetecDetailActivity extends BaseActivity {
     @BindView(R.id.tv_project_name)
     TextView mTvProjectName;
 
+    @BindView(R.id.rl_bg)
+    RelativeLayout mRlBg;
 
     private BaseQuickAdapter<String, BaseViewHolder> mBaseQuickAdapter;
     private String mId;
@@ -77,8 +81,10 @@ public class DetecDetailActivity extends BaseActivity {
 
                         if (bean.getTestResult().equals("1")) {
                             mtvTestResult.setText("阳性");
+                            mRlBg.setBackground(CommonUtils.getDrawable(R.drawable.img_detail_yang));
                         } else {
                             mtvTestResult.setText("阴性");
+                            mRlBg.setBackground(CommonUtils.getDrawable(R.drawable.img_detecdetail_bg));
                         }
                         mTvTestMember.setText(bean.getTestMember());
                         mTvProjectName.setText(bean.getProjectName());

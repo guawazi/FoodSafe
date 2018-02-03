@@ -30,7 +30,7 @@ public class DataDetectionRepository {
     }
 
 
-    public Flowable<List<DataDetectionBean>> getData(int page, String userid, String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime) {
+    public Flowable<List<DataDetectionBean>> getData(int page, String userid, String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime,String marketid) {
         return mDataDetectionRemoteSource.getData(
                 page,
                 userid,
@@ -41,7 +41,8 @@ public class DataDetectionRepository {
                 dstMarket,
                 result,
                 starttime,
-                endtime
+                endtime,
+                marketid
         );
     }
 

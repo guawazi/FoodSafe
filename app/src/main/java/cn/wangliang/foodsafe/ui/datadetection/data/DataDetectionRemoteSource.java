@@ -13,10 +13,10 @@ import io.reactivex.Flowable;
 
 public class DataDetectionRemoteSource {
 
-    public Flowable<List<DataDetectionBean>> getData(int page, String userid, String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime) {
+    public Flowable<List<DataDetectionBean>> getData(int page, String userid, String deviceid, String projectName, String sampleName, String carNO, String dstMarket,int result,long starttime,long endtime,String marketid) {
         return ApiService.getInstance()
                 .getApi()
-                .getDataDetectionData(page, userid, deviceid, projectName, sampleName, carNO, dstMarket,result,starttime,endtime)
+                .getDataDetectionData(page, userid, deviceid, projectName, sampleName, carNO, dstMarket,result,starttime,endtime,marketid)
                 .compose(RxFlowable.handleResult());
     }
 }

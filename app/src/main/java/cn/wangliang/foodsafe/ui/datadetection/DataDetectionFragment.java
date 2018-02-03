@@ -26,7 +26,7 @@ import cn.wangliang.foodsafe.data.network.ApiService;
 import cn.wangliang.foodsafe.data.network.RxFlowable;
 import cn.wangliang.foodsafe.data.network.RxSimpleSubscriber;
 import cn.wangliang.foodsafe.data.network.bean.DataDetectionBean;
-import cn.wangliang.foodsafe.data.network.bean.SampleNameBean;
+import cn.wangliang.foodsafe.data.network.bean.MarketBean;
 import cn.wangliang.foodsafe.ui.detecdetail.DetecDetailActivity;
 import cn.wangliang.foodsafe.util.CommonUtils;
 import cn.wangliang.foodsafe.util.Constant;
@@ -77,7 +77,7 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
     private PopupWindow mSampleNamePopupWindow;
     private BaseQuickAdapter<String, BaseViewHolder> mTypeResultAdapter;
     private ArrayList<String> mTypeResultList;
-    private BaseQuickAdapter<SampleNameBean, BaseViewHolder> mSampleNameAdapter;
+    private BaseQuickAdapter<MarketBean, BaseViewHolder> mSampleNameAdapter;
 
     private int mTypeResult = 0;
     // !!! 这不是真正的 uid
@@ -85,6 +85,7 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
 
     private long mStartTime = 0;
     private long mEndTime = 0;
+    private String mMarketid = "0";
 
     @Override
     protected int getLayout() {
@@ -108,9 +109,10 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         mEtCarNo = mSearchHeader.findViewById(R.id.et_car_no);
 
         checkSelectCondition();
-        mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
+        mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime,mMarketid);
 
         mTypeResultList = new ArrayList<>();
+        mTypeResultList.add("全部结果");
         mTypeResultList.add("阳性");
         mTypeResultList.add("阴性");
 
@@ -123,7 +125,7 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         });
         mSearchHeader.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
             checkSelectCondition();
-            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime,mMarketid);
         });
 
         mDataDetectionAdapter.setOnLoadMoreListener(() -> {
@@ -161,12 +163,12 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         initDataTypeWindow();
         ApiService.getInstance()
                 .getApi()
-                .getSampleNameList(SPUtils.getString(Constant.LOGIN_USERID, ""))
+                .getMarket(SPUtils.getString(Constant.LOGIN_USERID, ""))
                 .compose(RxFlowable.handleResult())
                 .compose(RxFlowable.io_main())
-                .subscribe(new RxSimpleSubscriber<List<SampleNameBean>>() {
+                .subscribe(new RxSimpleSubscriber<List<MarketBean>>() {
                     @Override
-                    public void onSuccess(List<SampleNameBean> bean) {
+                    public void onSuccess(List<MarketBean> bean) {
                         mSampleNameAdapter.setNewData(bean);
                     }
                 });
@@ -179,19 +181,20 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
                 LinearLayout.LayoutParams.WRAP_CONTENT, true);
         RecyclerView recyclerView = contentView.findViewById(R.id.recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mSampleNameAdapter = new BaseQuickAdapter<SampleNameBean, BaseViewHolder>(R.layout.item_popwindow_recycler) {
+        mSampleNameAdapter = new BaseQuickAdapter<MarketBean, BaseViewHolder>(R.layout.item_popwindow_recycler) {
+
             @Override
-            protected void convert(BaseViewHolder helper, SampleNameBean item) {
-                helper.setText(R.id.tv_item, item.getRealname());
+            protected void convert(BaseViewHolder helper, MarketBean item) {
+                helper.setText(R.id.tv_item, item.getMarketname());
             }
         };
 
         mSampleNameAdapter.setOnItemClickListener((adapter, view, position) -> {
-            SampleNameBean sampleNameBean = mSampleNameAdapter.getData().get(position);
-            mTvSampleName.setText(sampleNameBean.getRealname());
-            mUserId = sampleNameBean.getId();
+            MarketBean marketBean = mSampleNameAdapter.getData().get(position);
+            mTvSampleName.setText(marketBean.getMarketname());
+            mMarketid = marketBean.getId();
             mSampleNamePopupWindow.dismiss();
-            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime, mMarketid);
         });
 
         mSampleNameAdapter.bindToRecyclerView(recyclerView);
@@ -212,9 +215,9 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
         };
         mTypeResultAdapter.setOnItemClickListener((adapter, view, position) -> {
             mTvTypeResult.setText(mTypeResultAdapter.getData().get(position));
-            mTypeResult = position + 1;
+            mTypeResult = position;
             mTypeResultPopupWindow.dismiss();
-            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime);
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime,mMarketid);
         });
         mTypeResultAdapter.bindToRecyclerView(recyclerView);
         mTypeResultAdapter.setNewData(mTypeResultList);

@@ -10,6 +10,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/rl_bg"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:background="@drawable/img_detecdetail_bg">

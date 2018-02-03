@@ -25,8 +25,8 @@ public class DataDetectionAdapter extends BaseQuickAdapter<DataDetectionBean, Ba
         helper.setText(R.id.tv_sample_name, item.getSampleName());
         helper.setText(R.id.tv_sample_unit, item.getTestValue() + item.getSampleUnit());
         helper.setText(R.id.tv_test_time, TimeUtils.format(item.getTestTime()));
-        helper.setText(R.id.tv_x, item.getProjectName());
-        helper.setText(R.id.tv_xx, item.getProjectName());
+        helper.setText(R.id.tv_test_member, item.getTestMember());
+        helper.setText(R.id.tv_dst_market, item.getDstMarket());
         ImageView ivTestResult = helper.getView(R.id.iv_test_result);
         if (item.getTestResult().equals("1")) {// 阳性
             ivTestResult.setBackground(CommonUtils.getDrawable(R.drawable.img_test_yang));

@@ -51,6 +51,12 @@ public class DataDetectionBean {
     @SerializedName("type")
     private String type;
 
+    @SerializedName("test_member")
+    private String testMember;
+
+    @SerializedName("dst_market")
+    private String dstMarket;
+
     public String getBatch() {
         return batch;
     }
@@ -137,5 +143,21 @@ public class DataDetectionBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTestMember() {
+        return testMember;
+    }
+
+    public void setTestMember(String testMember) {
+        this.testMember = testMember;
+    }
+
+    public String getDstMarket() {
+        return dstMarket;
+    }
+
+    public void setDstMarket(String dstMarket) {
+        this.dstMarket = dstMarket;
     }
 }
