@@ -122,6 +122,7 @@ public class DataDetectionFragment extends MvpFragment<DataDetectionContract.Dat
             mEtDstMarket.setText("");
             mEtProjectName.setText("");
             mEtCarNo.setText("");
+            mPresenter.getData(mUserId, mDeviceid, mProjectName, mSampleName, mCarNo, mDstMarket, mTypeResult, mStartTime, mEndTime,mMarketid);
         });
         mSearchHeader.findViewById(R.id.tv_confirm).setOnClickListener(v -> {
             checkSelectCondition();

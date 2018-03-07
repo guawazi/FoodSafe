@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+    >
+
+    <TextView
+        android:id="@+id/tv_title3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="5dp"
+        android:singleLine="false"
+        android:text="市场检测信息"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_title3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:singleLine="false"
+        android:text="Market Detection Information"
+        android:textSize="12sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/view"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_toStartOf="@+id/textView"
+        android:background="@android:color/darker_gray"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_toEndOf="@id/tv_title3"
+        android:background="@android:color/darker_gray"/>
+
+</RelativeLayout>

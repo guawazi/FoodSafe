@@ -5,6 +5,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
@@ -35,6 +38,9 @@ import cn.wangliang.foodsafe.data.network.bean.StatisticsBean;
 import cn.wangliang.foodsafe.data.network.bean.StatisticsSampleBean;
 import cn.wangliang.foodsafe.data.network.bean.TimeBean;
 import cn.wangliang.foodsafe.data.network.bean.TopBean;
+import cn.wangliang.foodsafe.ui.dataanalysis.adapter.DataAnalysisAdapter;
+import cn.wangliang.foodsafe.ui.dataanalysis.adapter.LeftRecyclerAdapter;
+import cn.wangliang.foodsafe.ui.dataanalysis.adapter.RightRecyclerAdapter;
 import cn.wangliang.foodsafe.util.Constant;
 import cn.wangliang.foodsafe.util.SPUtils;
 import cn.wangliang.foodsafe.util.TimeUtils;
@@ -53,8 +59,11 @@ public class DataAnalysisFragment extends BaseFragment {
 
     PieChart mPieChart;
 
-    @BindView(R.id.tv_year)
-    TextView mTvYear;
+    @BindView(R.id.tv_start_data)
+    TextView mTvStartData;
+
+    @BindView(R.id.tv_end_data)
+    TextView mTvEndData;
 
     @BindView(R.id.tv_total_count)
     TextView mTvTotalCount;
@@ -71,14 +80,27 @@ public class DataAnalysisFragment extends BaseFragment {
     @BindView(R.id.tv_yang_percent)
     TextView mTvYangPercent;
 
+    @BindView(R.id.tv_platform)
+    TextView mTvPlatform;
 
     private DataAnalysisAdapter mDataAnalysisAdapter;
-    private TimePickerView mTimePickerView;
+    private TimePickerView mStartTimePickerView;
+    private TimePickerView mEndTimePickerView;
 
     private int minTime = 0;
     private int maxTime = 0;
 
     private String mDefaultYear = "2018";
+    private PopupWindow mPlatformWindow;
+    private RecyclerView mRecyclerLeft;
+    private RecyclerView mRecyclerRight;
+    private LeftRecyclerAdapter mLeftRecyclerAdapter;
+    private RightRecyclerAdapter mRightRecyclerAdapter;
+    private ArrayList<String> mLeftData;
+    private ArrayList<String> mRightCityData;
+    private ArrayList<String> mRightMarketData;
+    private ArrayList<String> mRightFactoryData;
+    private ArrayList<List> mRightDatas;
 
     @Override
     protected int getLayout() {
@@ -97,19 +119,103 @@ public class DataAnalysisFragment extends BaseFragment {
         View noQualifiedHeader = LayoutInflater.from(getContext()).inflate(R.layout.item_analysis_not_qualified_header, mRecyclerView, false);
         mPieChart = noQualifiedHeader.findViewById(R.id.pie_chart);
 
+        View itemHeader3 = LayoutInflater.from(getContext()).inflate(R.layout.item_header3, mRecyclerView, false);
+
+        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.item_platform_popwindow, null);
+        mPlatformWindow = new PopupWindow(contentView,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        mPlatformWindow.setOnDismissListener(() -> backgroundAlpha(1));
+        mRecyclerLeft = contentView.findViewById(R.id.recycler_left);
+        mRecyclerLeft.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerRight = contentView.findViewById(R.id.recycler_right);
+        mRecyclerRight.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        mLeftRecyclerAdapter = new LeftRecyclerAdapter(R.layout.item_platform_left);
+        mLeftRecyclerAdapter.bindToRecyclerView(mRecyclerLeft);
+
+        mRightRecyclerAdapter = new RightRecyclerAdapter(R.layout.item_platform_right);
+        mRightRecyclerAdapter.bindToRecyclerView(mRecyclerRight);
+
+        mLeftData = new ArrayList<>();
+        mLeftData.add("区域选择");
+        mLeftData.add("市场选择");
+        mLeftData.add("厂家选择");
+        mLeftRecyclerAdapter.setNewData(mLeftData);
+
+        mRightCityData = new ArrayList<>();
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  通州区");
+        mRightCityData.add("北京  顺义区");
+        mRightCityData.add("北京  昌平区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightCityData.add("北京  朝阳区");
+        mRightRecyclerAdapter.setNewData(mRightCityData);
+
+        mRightMarketData = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            mRightMarketData.add("市场" + i);
+        }
+
+        mRightFactoryData = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            mRightFactoryData.add("厂家" + i);
+        }
+
+        mRightDatas = new ArrayList<>();
+        mRightDatas.add(mRightCityData);
+        mRightDatas.add(mRightMarketData);
+        mRightDatas.add(mRightFactoryData);
+
+        mLeftRecyclerAdapter.setOnItemClickListener((adapter, view, position) -> {
+            mLeftRecyclerAdapter.setSelectionItem(view, position);
+            mRightRecyclerAdapter.setNewData(mRightDatas.get(position));
+        });
+
+
+        mRightRecyclerAdapter.setOnItemClickListener((adapter, view, position) -> {
+            String s = mRightRecyclerAdapter.getData().get(position);
+            mTvPlatform.setText(s);
+            mPlatformWindow.dismiss();
+        });
+
         mDataAnalysisAdapter.addHeaderView(qualifiedHeader);
         mDataAnalysisAdapter.addHeaderView(noQualifiedHeader);
+//        mDataAnalysisAdapter.addHeaderView(itemHeader3);
 
-        mTimePickerView = new TimePickerView.Builder(getContext(), (date, v) -> {
-            String format = TimeUtils.format3(date.getTime());
-            mTvYear.setText(format + "年");
-            initData(format);
+        mStartTimePickerView = new TimePickerView.Builder(getContext(), (date, v) -> {
+            String format = TimeUtils.format2(date.getTime());
+            mTvStartData.setText(format + "年");
+//            initData(format);
         })
-                .setType(new boolean[]{true, false, false, false, false, false})
-                .setTitleText("选择时间")
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setTitleText("选择开始时间")
                 .build();
-        mTimePickerView.setDate(Calendar.getInstance());
+        mStartTimePickerView.setDate(Calendar.getInstance());
+
+        mEndTimePickerView = new TimePickerView.Builder(getContext(), (date, v) -> {
+            String format = TimeUtils.format2(date.getTime());
+            mTvEndData.setText(format + "年");
+//            initData(format);
+        })
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .setTitleText("选择结束时间")
+                .build();
+        mEndTimePickerView.setDate(Calendar.getInstance());
+
         initData(mDefaultYear);
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("新发地");
+        strings.add("盛华宏林");
+        strings.add("岳各庄");
+        strings.add("锦绣大地");
+        strings.add("八里桥");
+//        mDataAnalysisAdapter.setNewData(strings);
     }
 
     private void initLineChart(List<TimeBean> timeBeanList) {
@@ -234,15 +340,29 @@ public class DataAnalysisFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.ll_chose_time})
+    @OnClick({R.id.tv_start_data, R.id.tv_end_data, R.id.tv_platform})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ll_chose_time:
-                mTimePickerView.show();
+            case R.id.tv_start_data:
+                mStartTimePickerView.show();
+                break;
+            case R.id.tv_end_data:
+                mEndTimePickerView.show();
+                break;
+            case R.id.tv_platform:
+                backgroundAlpha(0.5f);
+                mPlatformWindow.showAsDropDown(mTvPlatform);
                 break;
         }
     }
 
+
+    // 设置屏幕透明度
+    public void backgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
+        lp.alpha = bgAlpha; // 0.0~1.0
+        getActivity().getWindow().setAttributes(lp); //act 是上下文context
+    }
 
     public static DataAnalysisFragment newInstance() {
         return new DataAnalysisFragment();

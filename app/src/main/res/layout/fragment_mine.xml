@@ -12,12 +12,13 @@
         android:layout_height="55dp"
         android:background="#458B5D"
         android:gravity="center"
-        android:text="北京市食药局"
+        android:text="市场数据平台"
         android:textColor="#fff"
         android:textSize="18sp"/>
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_instrument_num"
         android:layout_width="match_parent"
         android:layout_height="50dp"
